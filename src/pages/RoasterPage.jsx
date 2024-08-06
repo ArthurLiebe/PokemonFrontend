@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Navbar from '../components/Navbar';
 
 const RoasterPage = () => {
   return (
     <div>
-      <h1>Roaster Page</h1>
+      <h1>My Roaster</h1>
     </div>
   );
 }
