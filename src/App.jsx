@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import RoasterPage from './pages/RoasterPage';
 import Leaderboard from './pages/Leaderboard';
 import BattlePage from './pages/BattlePage.jsx';
-import Search from './pages/Search';
+
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
         <Route path="/roaster" element={<RoasterPage />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/battlepage" element={<BattlePage />} />
-        <Route path="/search" element={<Search />} />
+        
       </Routes>
     </div>
   );
