@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   return (
     <nav>
-      <ul className='bg-black'>
+      <ul className='bg-slate-100'>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/roaster">Roaster Page</Link></li>
         <li><Link to="/leaderboard">Leaderboard</Link></li>
