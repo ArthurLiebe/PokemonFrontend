@@ -9,7 +9,6 @@ const Navbar = () => {
         <li><Link to="/roaster">Roaster Page</Link></li>
         <li><Link to="/leaderboard">Leaderboard</Link></li>
         <li><Link to="/battlepage">Battle Page</Link></li>
-        <li><input></input><Link to="/search">Search Pokemon</Link></li>
       </ul>
     </nav>
   );
