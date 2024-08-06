@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PokemonCard from '../components/PokemonCard'; // Importiere die PokemonCard-Komponente
 
 const Home = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -99,22 +100,10 @@ const Home = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {searchResult ? (
-            <div className="pokemon-card border p-4 rounded shadow" onClick={() => handlePokemonClick(searchResult)}>
-              <h2 className="text-xl font-bold mb-2">{searchResult.name}</h2>
-              <img src={searchResult.sprites.front_default} alt={searchResult.name} className="mb-2" />
-              <p>HP: {searchResult.stats.find(stat => stat.stat.name === 'hp').base_stat}</p>
-              <p>Attack: {searchResult.stats.find(stat => stat.stat.name === 'attack').base_stat}</p>
-              <p>Type: {searchResult.types.map((type) => type.type.name).join(', ')}</p>
-            </div>
+            <PokemonCard pokemon={searchResult} onClick={handlePokemonClick} />
           ) : (
             pokemons.map((pokemon) => (
-              <div key={pokemon.id} className="pokemon-card border p-4 rounded shadow" onClick={() => handlePokemonClick(pokemon)}>
-                <h2 className="text-xl font-bold mb-2">{capitalizeFirstLetter(pokemon.name)}</h2>
-                <img src={pokemon.sprites.front_default} alt={pokemon.name} className="mb-2" />
-                <p>HP: {pokemon.stats.find(stat => stat.stat.name === 'hp').base_stat}</p>
-                <p>Attack: {pokemon.stats.find(stat => stat.stat.name === 'attack').base_stat}</p>
-                <p>Type: {pokemon.types.map((type) => type.type.name).join(', ')}</p>
-              </div>
+              <PokemonCard key={pokemon.id} pokemon={pokemon} onClick={handlePokemonClick} />
             ))
           )}
         </div>
