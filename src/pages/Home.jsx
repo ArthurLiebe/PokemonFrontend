@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PokemonCard from '../components/PokemonCard'; // neuer Code
+import PokemonCard from '../components/PokemonCard';
 
 const Home = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -55,7 +55,6 @@ const Home = () => {
     setSelectedPokemon(null);
   };
 
-  // ohne diese Funktion könnend ie Details nciht geöffnet werden -> wegen PopUp aber nochmal zu prüfen
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
@@ -101,26 +100,10 @@ const Home = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {searchResult ? (
-            // entfernter Code zwecks PokemonCard Componente
-            // <div className="pokemon-card border p-4 rounded shadow" onClick={() => handlePokemonClick(searchResult)}>
-            //   <h2 className="text-xl font-bold mb-2">{searchResult.name}</h2>
-            //   <img src={searchResult.sprites.front_default} alt={searchResult.name} className="mb-2" />
-            //   <p>HP: {searchResult.stats.find(stat => stat.stat.name === 'hp').base_stat}</p>
-            //   <p>Attack: {searchResult.stats.find(stat => stat.stat.name === 'attack').base_stat}</p>
-            //   <p>Type: {searchResult.types.map((type) => type.type.name).join(', ')}</p>
-            // </div>
-            <PokemonCard pokemon={searchResult} onClick={handlePokemonClick} /> // neuer Code
+            <PokemonCard pokemon={searchResult} onClick={handlePokemonClick} />
           ) : (
             pokemons.map((pokemon) => (
-              // entfernter Code zwecks PokemonCard Componente
-              // <div key={pokemon.id} className="pokemon-card border p-4 rounded shadow" onClick={() => handlePokemonClick(pokemon)}>
-              //   <h2 className="text-xl font-bold mb-2">{capitalizeFirstLetter(pokemon.name)}</h2>
-              //   <img src={pokemon.sprites.front_default} alt={pokemon.name} className="mb-2" />
-              //   <p>HP: {pokemon.stats.find(stat => stat.stat.name === 'hp').base_stat}</p>
-              //   <p>Attack: {pokemon.stats.find(stat => stat.stat.name === 'attack').base_stat}</p>
-              //   <p>Type: {pokemon.types.map((type) => type.type.name).join(', ')}</p>
-              // </div>
-              <PokemonCard key={pokemon.id} pokemon={pokemon} onClick={handlePokemonClick} /> // neuer Code
+              <PokemonCard key={pokemon.id} pokemon={pokemon} onClick={handlePokemonClick} />
             ))
           )}
         </div>
