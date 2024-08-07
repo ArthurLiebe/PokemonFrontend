@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 
 const Leaderboard = () => {
     const [scores, setScores] = useState([]);
@@ -14,8 +13,9 @@ const Leaderboard = () => {
     // Function to fetch scores from the backend
     const fetchScores = async () => {
         try {
-            const response = await axios.get('/leaderboard');
-            setScores(response.data);
+            const response = await fetch('/leaderboard');
+            const data = await response.json();
+            setScores(data);
         } catch (error) {
             console.error("Error fetching scores:", error);
         }
@@ -25,7 +25,14 @@ const Leaderboard = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/leaderboard', { username, score });
+            const response = await fetch('/leaderboard', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, score }),
+            });
+            await response.json();
             fetchScores(); // Refresh the leaderboard after submission
             setUsername('');
             setScore(0);
