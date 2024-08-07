@@ -60,23 +60,59 @@ const Home = () => {
     setSelectedPokemon(null);
   };
 
-  const addToRoaster = async (pokemon) => {
-    
+  const getAllRoster = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/roster");
+      if (response.status !== 200) throw Error("something went wrong");
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        return data;
+      } else {
+        throw new Error("Data is not an array");
+      }
+    } catch (error) {
+      console.error("Error fetching Pokémon data:", error);
+    }
+  };
+
+  const addToRoster = async (pokemon) => {
+    const rosterData = await getAllRoster();
+
+    if (!Array.isArray(rosterData)) {
+      throw new Error("Roster data is not an array");
+    }
     const pokemonData = {
       name: pokemon.name,
       image: pokemon.sprites.front_default,
-      type: pokemon.types.map((type) => type.type.name).join(', '),
+      type: pokemon.types.map((type) => type.type.name).join(", "),
       height: pokemon.height,
       weight: pokemon.weight,
-      ability: pokemon.abilities[0]?.ability.name, 
+      ability: pokemon.abilities[0]?.ability.name,
       experience: pokemon.base_experience,
-      hp: pokemon.stats.find(stat => stat.stat.name === 'hp')?.base_stat,
-      attack: pokemon.stats.find(stat => stat.stat.name === 'attack')?.base_stat,
-      defense: pokemon.stats.find(stat => stat.stat.name === 'defense')?.base_stat,
-      specialAttack: pokemon.stats.find(stat => stat.stat.name === 'special-attack')?.base_stat,
-      specialDefense: pokemon.stats.find(stat => stat.stat.name === 'special-defense')?.base_stat,
-      speed: pokemon.stats.find(stat => stat.stat.name === 'speed')?.base_stat,
+      hp: pokemon.stats.find((stat) => stat.stat.name === "hp")?.base_stat,
+      attack: pokemon.stats.find((stat) => stat.stat.name === "attack")
+        ?.base_stat,
+      defense: pokemon.stats.find((stat) => stat.stat.name === "defense")
+        ?.base_stat,
+      specialAttack: pokemon.stats.find(
+        (stat) => stat.stat.name === "special-attack",
+      )?.base_stat,
+      specialDefense: pokemon.stats.find(
+        (stat) => stat.stat.name === "special-defense",
+      )?.base_stat,
+      speed: pokemon.stats.find((stat) => stat.stat.name === "speed")
+        ?.base_stat,
     };
+
+    const existingPokemon = rosterData.find((p) => p.name === pokemonData.name);
+    if (existingPokemon) {
+      alert("pokemon exitiert");
+      return;
+    }
+    if (rosterData.length >= 5) {
+      alert("You can only add up to 5 Pokémon.");
+      return;
+    }
     try {
       const response = await fetch("http://localhost:3000/roster", {
         method: "POST",
@@ -88,7 +124,8 @@ const Home = () => {
       if (!response.ok) {
         throw new Error("Failed to add Pokémon");
       }
-      console.log("Fetched Pokemons1:", pokemonData);
+
+      alert("Pokémon added successfully.");
     } catch (error) {
       console.error("Error fetching Pokémon data:", error);
     }
@@ -158,10 +195,10 @@ const Home = () => {
             Back
           </button>
           <button
-            onClick={() => addToRoaster(selectedPokemon)}
+            onClick={() => addToRoster(selectedPokemon)}
             className="p-2 mt-4 text-white bg-green-500 rounded"
           >
-            Add to Roaster
+            Add to Roster
           </button>
         </div>
       ) : (
