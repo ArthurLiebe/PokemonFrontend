@@ -88,7 +88,6 @@ const Home = () => {
       if (!response.ok) {
         throw new Error("Failed to add Pokémon");
       }
-      const data = await response.json();
       console.log("Fetched Pokemons1:", pokemonData);
     } catch (error) {
       console.error("Error fetching Pokémon data:", error);
