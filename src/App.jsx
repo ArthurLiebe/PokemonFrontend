@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import RoasterPage from './pages/RoasterPage';
 import Leaderboard from './pages/Leaderboard';
 import BattlePage from './pages/BattlePage.jsx';
+import './components/PokemonCard.jsx';
 
 
 const App = () => {
