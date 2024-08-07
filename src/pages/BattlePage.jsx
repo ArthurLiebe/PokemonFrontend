@@ -16,7 +16,7 @@ const BattlePage = () => {
         }
         const data = await response.json();
 
-        console.log('Fetched Pokemons1:', data); // Debugging log
+        console.log('Fetched Pokemons1:', data);
 
         if (Array.isArray(data)) {
           const formattedData = data.map(pokemon => ({
@@ -51,7 +51,7 @@ const BattlePage = () => {
           })
         );
 
-        console.log('Fetched Pokemons2:', pokemonDetails); // Debugging log
+        console.log('Fetched Pokemons2:', pokemonDetails);
 
         setPokemons2(pokemonDetails);
       } catch (error) {
