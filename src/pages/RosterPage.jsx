@@ -12,7 +12,7 @@ const RosterPage = () => {
       const data = await response.json();
 
       if (Array.isArray(data)) {
-        setPokemons(data);
+        setPokemons(()=>data);
       } else {
         throw new Error("Invalid data format");
       }
@@ -57,15 +57,14 @@ const RosterPage = () => {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {pokemons.map((pokemon) => {
           const imageUrl =
-            pokemon.sprites?.front_default || "default-image-url";
+            pokemon.image || "default-image-url";
           const hp =
-            pokemon.stats?.find((stat) => stat.stat.name === "hp")?.base_stat ||
+            pokemon.hp ||
             "N/A";
           const attack =
-            pokemon.stats?.find((stat) => stat.stat.name === "attack")
-              ?.base_stat || "N/A";
+            pokemon.attack || "N/A";
           const types =
-            pokemon.types?.map((type) => type.type.name).join(", ") ||
+            pokemon.type ||
             "Unknown";
 
           return (
