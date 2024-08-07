@@ -1,22 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import PokemonCard from '../components/PokemonCard';
+import { setBattleResult } from '../components/BattleResults.js';
 
 const BattlePage = () => {
-  const initialPokemons1 = [
-    { name: 'Pikachu', hp: 100, attack: 15, sprites: { front_default: 'pikachu_image_url' }, stats: [{ stat: { name: 'hp' }, base_stat: 100 }, { stat: { name: 'attack' }, base_stat: 15 }], types: [{ type: { name: 'electric' } }] },
-    { name: 'Pikachu', hp: 100, attack: 15, sprites: { front_default: 'pikachu_image_url' }, stats: [{ stat: { name: 'hp' }, base_stat: 100 }, { stat: { name: 'attack' }, base_stat: 15 }], types: [{ type: { name: 'electric' } }] },
-    { name: 'Pikachu', hp: 100, attack: 15, sprites: { front_default: 'pikachu_image_url' }, stats: [{ stat: { name: 'hp' }, base_stat: 100 }, { stat: { name: 'attack' }, base_stat: 15 }], types: [{ type: { name: 'electric' } }] },
-    { name: 'Pikachu', hp: 100, attack: 15, sprites: { front_default: 'pikachu_image_url' }, stats: [{ stat: { name: 'hp' }, base_stat: 100 }, { stat: { name: 'attack' }, base_stat: 15 }], types: [{ type: { name: 'electric' } }] },
-    { name: 'Pikachu', hp: 100, attack: 15, sprites: { front_default: 'pikachu_image_url' }, stats: [{ stat: { name: 'hp' }, base_stat: 100 }, { stat: { name: 'attack' }, base_stat: 15 }], types: [{ type: { name: 'electric' } }] },
-  ];
-
-  const [pokemons1, setPokemons1] = useState(initialPokemons1);
+  const [pokemons1, setPokemons1] = useState([]);
   const [pokemons2, setPokemons2] = useState([]);
   const [winner, setWinner] = useState(null);
   const [score, setScore] = useState({ player1: 0, player2: 0 });
 
   useEffect(() => {
-    const fetchPokemons = async () => {
+    const fetchPokemons1 = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/roster');
+        if (!response.ok) {
+          throw new Error('Failed to fetch Pokémon');
+        }
+        const data = await response.json();
+
+        console.log('Fetched Pokemons1:', data); // Debugging log
+
+        if (Array.isArray(data)) {
+          const formattedData = data.map(pokemon => ({
+            name: pokemon.name,
+            sprites: { front_default: pokemon.image },
+            stats: [
+              { base_stat: pokemon.hp, stat: { name: 'hp' } },
+              { base_stat: pokemon.attack, stat: { name: 'attack' } },
+              { base_stat: pokemon.defense, stat: { name: 'defense' } },
+              { base_stat: pokemon.specialAttack, stat: { name: 'special-attack' } },
+              { base_stat: pokemon.specialDefense, stat: { name: 'special-defense' } },
+              { base_stat: pokemon.speed, stat: { name: 'speed' } },
+            ],
+            types: [{ type: { name: pokemon.type } }],
+          }));
+          setPokemons1(formattedData);
+        } else {
+          throw new Error('Invalid data format');
+        }
+      } catch (error) {
+        console.error('Error fetching Pokémon data:', error);
+      }
+    };
+
+    const fetchPokemons2 = async () => {
       try {
         const randomIds = Array.from({ length: 5 }, () => Math.floor(Math.random() * 898) + 1);
         const pokemonDetails = await Promise.all(
@@ -25,13 +50,17 @@ const BattlePage = () => {
             return res.json();
           })
         );
+
+        console.log('Fetched Pokemons2:', pokemonDetails); // Debugging log
+
         setPokemons2(pokemonDetails);
       } catch (error) {
-        console.error('Error fetching Pokémon data:', error);
+        console.error('Error fetching Pokémon data from API:', error);
       }
     };
 
-    fetchPokemons();
+    fetchPokemons1();
+    fetchPokemons2();
   }, []);
 
   const fight = (pokemon1, pokemon2) => {
@@ -69,19 +98,47 @@ const BattlePage = () => {
     }
 
     setScore(newScore);
-    setWinner(newScore.player1 > newScore.player2 ? 'Player 1' : 'Player 2');
+    const winner = newScore.player1 > newScore.player2 ? 'Player 1' : 'Player 2';
+    setWinner(winner);
+    const resultString = `${winner} wins ${newScore.player1}:${newScore.player2}`;
+    setBattleResult(resultString);
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   return (
     <div className="p-4">
       <h1 className="text-2xl text-center font-bold mb-4">Battle Page</h1>
-      <p></p>
       <div className="flex flex-col items-center space-y-4">
         {pokemons1.map((pokemon1, index) => (
           <div key={index} className="flex items-center space-x-4">
-            <PokemonCard pokemon={pokemon1} className="w-36" />
+            <div className="pokemon-card border p-4 rounded shadow w-36">
+              {pokemon1.sprites ? (
+                <>
+                  <h2 className="text-xl font-bold mb-2">{capitalizeFirstLetter(pokemon1.name)}</h2>
+                  <img src={pokemon1.sprites.front_default} alt={pokemon1.name} className="mb-2" />
+                  <p>HP: {pokemon1.stats.find(stat => stat.stat.name === 'hp').base_stat}</p>
+                  <p>Attack: {pokemon1.stats.find(stat => stat.stat.name === 'attack').base_stat}</p>
+                  <p>Type: {pokemon1.types.map((type) => type.type.name).join(', ')}</p>
+                </>
+              ) : (
+                <p>n/a</p>
+              )}
+            </div>
             <div className="text-xl font-bold">VS</div>
-            {pokemons2[index] && <PokemonCard pokemon={pokemons2[index]} className="w-36" />}
+            {pokemons2[index] && pokemons2[index].sprites ? (
+              <div className="pokemon-card border p-4 rounded shadow w-36">
+                <h2 className="text-xl font-bold mb-2">{capitalizeFirstLetter(pokemons2[index].name)}</h2>
+                <img src={pokemons2[index].sprites.front_default} alt={pokemons2[index].name} className="mb-2" />
+                <p>HP: {pokemons2[index].stats.find(stat => stat.stat.name === 'hp').base_stat}</p>
+                <p>Attack: {pokemons2[index].stats.find(stat => stat.stat.name === 'attack').base_stat}</p>
+                <p>Type: {pokemons2[index].types.map((type) => type.type.name).join(', ')}</p>
+              </div>
+            ) : (
+              <p>n/a</p>
+            )}
           </div>
         ))}
       </div>
@@ -89,12 +146,7 @@ const BattlePage = () => {
         <button onClick={startBattle} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
           Start Battle
         </button>
-        {winner && <h2 className="mt-4 text-xl font-bold">{winner} wins!</h2>}
-        <div className="mt-4 text-center">
-          <h3 className="text-lg font-bold">Score</h3>
-          <p>Player 1: {score.player1}</p>
-          <p>Player 2: {score.player2}</p>
-        </div>
+        {winner && <h2 className="mt-4 text-xl font-bold">{winner} wins {score.player1}:{score.player2}</h2>}
       </div>
     </div>
   );
