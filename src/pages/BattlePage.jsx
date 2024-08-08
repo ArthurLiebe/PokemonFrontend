@@ -110,14 +110,14 @@ const BattlePage = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl text-center font-bold mb-4">Battle Page</h1>
+      <h1 className="mb-4 text-2xl font-bold text-center">Battle Page</h1>
       <div className="flex flex-col items-center space-y-4">
         {pokemons1.map((pokemon1, index) => (
           <div key={index} className="flex items-center space-x-4">
-            <div className="pokemon-card border p-4 rounded shadow w-36">
+            <div className="p-4 border rounded shadow pokemon-card w-36">
               {pokemon1.sprites ? (
                 <>
-                  <h2 className="text-xl font-bold mb-2">{capitalizeFirstLetter(pokemon1.name)}</h2>
+                  <h2 className="mb-2 text-xl font-bold">{capitalizeFirstLetter(pokemon1.name)}</h2>
                   <img src={pokemon1.sprites.front_default} alt={pokemon1.name} className="mb-2" />
                   <p>HP: {pokemon1.stats.find(stat => stat.stat.name === 'hp').base_stat}</p>
                   <p>Attack: {pokemon1.stats.find(stat => stat.stat.name === 'attack').base_stat}</p>
@@ -129,8 +129,8 @@ const BattlePage = () => {
             </div>
             <div className="text-xl font-bold">VS</div>
             {pokemons2[index] && pokemons2[index].sprites ? (
-              <div className="pokemon-card border p-4 rounded shadow w-36">
-                <h2 className="text-xl font-bold mb-2">{capitalizeFirstLetter(pokemons2[index].name)}</h2>
+              <div className="p-4 border rounded shadow pokemon-card w-36">
+                <h2 className="mb-2 text-xl font-bold">{capitalizeFirstLetter(pokemons2[index].name)}</h2>
                 <img src={pokemons2[index].sprites.front_default} alt={pokemons2[index].name} className="mb-2" />
                 <p>HP: {pokemons2[index].stats.find(stat => stat.stat.name === 'hp').base_stat}</p>
                 <p>Attack: {pokemons2[index].stats.find(stat => stat.stat.name === 'attack').base_stat}</p>
@@ -143,7 +143,7 @@ const BattlePage = () => {
         ))}
       </div>
       <div className="flex flex-col items-center mt-4">
-        <button onClick={startBattle} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+        <button onClick={startBattle} className="px-4 py-2 mt-4 text-white bg-blue-500 rounded">
           Start Battle
         </button>
         {winner && <h2 className="mt-4 text-xl font-bold">{winner} wins {score.player1}:{score.player2}</h2>}
