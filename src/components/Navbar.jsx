@@ -1,17 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({ searchQuery, setSearchQuery, handleSearch }) => {
+const Navbar = () => {
   return (
-    <nav className="navbar flex items-center justify-between p-4 bg-slate-100">
-      <div className="navbar-content flex flex-1 justify-center space-x-6">
-        <Link to="/" className="nav-link">Home</Link>
-        <Link to="/roster" className="nav-link">My Roster</Link>
-        <Link to="/battle" className="nav-link">Battle</Link>
-        <Link to="/leaderboard" className="nav-link">Leaderboard</Link>
+    <div className="navbar bg-primary text-primary-content justify-center">
+      <div className="navbar-start">
+        <Link to="/" className="btn btn-ghost normal-case text-2xl">Pokémon: Battle Game</Link>
       </div>
-    </nav>
+
+      <div className="navbar-center">
+        <ul className="menu menu-horizontal px-1">
+        <li><Link to="/" className="text-xl">Home</Link></li>
+          <li><Link to="/roster" className="text-xl">My Roster</Link></li>
+          <li><Link to="/battle" className="text-xl">Battle</Link></li>
+          <li><Link to="/leaderboard" className="text-xl">Leaderboard</Link></li>
+        </ul>
+      </div>
+
+      <div className="navbar-end"></div>
+    </div>
   );
 };
 
-export default Navbar;
+export default Navbar
