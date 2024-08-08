@@ -78,7 +78,6 @@ const Home = () => {
 
   const addToRoster = async (pokemon) => {
     const rosterData = await getAllRoster();
-    console.log(pokemon);
     if (!Array.isArray(rosterData)) {
       throw new Error("Roster data is not an array");
     }
@@ -105,7 +104,7 @@ const Home = () => {
       speed: pokemon.stats.find((stat) => stat.stat.name === "speed")
         ?.base_stat,
     };
-console.log(pokemonData);
+    
     const existingPokemon = rosterData.find((p) => p.name === pokemonData.name);
     if (existingPokemon) {
       alert("pokemon exitiert");
