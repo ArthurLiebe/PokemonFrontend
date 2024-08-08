@@ -202,20 +202,15 @@ const BattlePage = () => {
             </div>
           ))}
         </div>
-        <div className="flex flex-col items-center mt-4">
+        <div className="flex items-center  justify-center mt-4 gap-6">
           <button
             onClick={startBattle}
             className="px-4 py-2 mt-4 text-white bg-blue-500 rounded"
           >
             Start Battle
           </button>
-          {winner && (
-            <h2 className="mt-4 text-xl font-bold">
-              {winner} wins {score.player1}:{score.player2}
-            </h2>
-          )}
         </div>
-        <BattleDialog />
+        <BattleDialog score={score}/>
       </div>
     </>
   );

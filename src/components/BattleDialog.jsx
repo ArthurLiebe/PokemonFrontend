@@ -1,4 +1,4 @@
-const BattleDialog = ({ points}) => {
+const BattleDialog = ({ score}) => {
   const handleSubmit =() => {
     console.log("close");
   }
@@ -7,7 +7,8 @@ const BattleDialog = ({ points}) => {
       <div className="modal-box">
         <form>
           <fieldset>
-            <p className="text-lg font-bold">{`Win: ${points} Points`}</p>
+            <p className="text-lg font-bold mb-6">{score.player1 > score.player2 ? `You got ${score.player1} Points, You win!` : `Computer got ${score.player2} Points, Computer wins!`}</p>
+
             <label className="input input-bordered flex items-center gap-2">
               Username
               <input
