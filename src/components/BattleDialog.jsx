@@ -9,7 +9,7 @@ const BattleDialog = ({ score }) => {
   }
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:3000/leaderboard", {
+      const response = await fetch(`${import.meta.env.VITE_APP_TRAVEL_JOURNAL_API_URL}/leaderboard`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -28,13 +28,13 @@ const BattleDialog = ({ score }) => {
       <div className="modal-box">
         <form>
           <fieldset>
-            <p className="text-lg font-bold mb-6">
+            <p className="mb-6 text-lg font-bold">
               {userScore > pcScore
                 ? `You got ${userScore} Points, You win!`
                 : `Computer got ${pcScore} Points, Computer wins!`}
             </p>
 
-            <label className="input input-bordered flex items-center gap-2">
+            <label className="flex items-center gap-2 input input-bordered">
               Username
               <input
                 type="text"
