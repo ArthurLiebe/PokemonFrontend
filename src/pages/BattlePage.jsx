@@ -70,10 +70,16 @@ const BattlePage = () => {
   }, []);
 
   const fight = (pokemon1, pokemon2) => {
-    let p1 = { ...pokemon1 };
-    let p2 = { ...pokemon2 };
+    let p1 = {
+      hp: pokemon1.stats.find((stat) => stat.stat.name === "hp").base_stat,
+      attack: pokemon1.stats.find((stat) => stat.stat.name === "attack").base_stat,
+    };
+    let p2 = {
+      hp: pokemon2.stats.find((stat) => stat.stat.name === "hp").base_stat,
+      attack: pokemon2.stats.find((stat) => stat.stat.name === "attack").base_stat,
+    };
     let turn = Math.random() < 0.5 ? "p1" : "p2";
-
+  
     while (p1.hp > 0 && p2.hp > 0) {
       if (turn === "p1") {
         p2.hp -= p1.attack;
@@ -90,10 +96,10 @@ const BattlePage = () => {
       }
     }
   };
-
+  
   const startBattle = () => {
     let newScore = { player1: 0, player2: 0 };
-
+  
     for (let i = 0; i < 5; i++) {
       const result = fight(pokemons1[i], pokemons2[i]);
       if (result === "player1") {
@@ -102,10 +108,9 @@ const BattlePage = () => {
         newScore.player2 += 1;
       }
     }
-
+  
     setScore(newScore);
-    const winner =
-      newScore.player1 > newScore.player2 ? "Player 1" : "Player 2";
+    const winner = newScore.player1 > newScore.player2 ? "Player 1" : "Player 2";
     setWinner(winner);
     const resultString = `${winner} wins ${newScore.player1}:${newScore.player2}`;
     setBattleResult(resultString);

@@ -2,73 +2,49 @@ import React, { useEffect, useState } from 'react';
 
 const Leaderboard = () => {
     const [scores, setScores] = useState([]);
-    const [username, setUsername] = useState('');
-    const [score, setScore] = useState(0);
 
-    // Fetch scores when the component mounts
     useEffect(() => {
         fetchScores();
     }, []);
 
-    // Function to fetch scores from the backend
     const fetchScores = async () => {
         try {
-            const response = await fetch('/leaderboard');
+            const response = await fetch('http://localhost:3000/leaderboard');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
             const data = await response.json();
-            setScores(data);
+            const sortedData = data.sort((a, b) => b.score - a.score);
+            console.log(sortedData);
+            setScores(sortedData);
         } catch (error) {
             console.error("Error fetching scores:", error);
         }
     };
 
-    // Function to handle the score submission
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('/leaderboard', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, score }),
-            });
-            await response.json();
-            fetchScores(); // Refresh the leaderboard after submission
-            setUsername('');
-            setScore(0);
-        } catch (error) {
-            console.error("Error submitting score:", error);
-        }
-    };
-
     return (
-        <div>
-            <h1>Leaderboard</h1>
-            <form onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
-                    placeholder="Enter your name" 
-                    value={username} 
-                    onChange={(e) => setUsername(e.target.value)} 
-                    required 
-                />
-                <input 
-                    type="number" 
-                    placeholder="Enter your score" 
-                    value={score} 
-                    onChange={(e) => setScore(e.target.value)} 
-                    required 
-                />
-                <button type="submit">Submit Score</button>
-            </form>
-            <h2>Top Scores</h2>
-            <ul>
-                {scores.map((entry) => (
-                    <li key={entry.id}>
-                        {entry.username}: {entry.score} (Date: {new Date(entry.date).toLocaleDateString()})
-                    </li>
-                ))}
-            </ul>
+        <div className="container mx-auto p-4">
+            <h1 className="text-3xl font-bold mb-4 text-center">Leaderboard</h1>
+            <div className="overflow-x-auto">
+                <table className="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th className="py-2 px-4 border-b">Position</th>
+                            <th className="py-2 px-4 border-b">Username</th>
+                            <th className="py-2 px-4 border-b">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {scores.map((entry, index) => (
+                            <tr key={entry.id}>
+                                <td className="py-2 px-4 border-b text-center">{index + 1}.</td>
+                                <td className="py-2 px-4 border-b text-center">{entry.username}</td>
+                                <td className="py-2 px-4 border-b text-center">{entry.score}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
