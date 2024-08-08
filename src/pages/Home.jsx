@@ -28,6 +28,7 @@ const Home = () => {
     };
 
     fetchPokemons();
+  
   }, []);
 
   const handleSearch = async (e) => {
@@ -77,17 +78,17 @@ const Home = () => {
 
   const addToRoster = async (pokemon) => {
     const rosterData = await getAllRoster();
-
     if (!Array.isArray(rosterData)) {
       throw new Error("Roster data is not an array");
     }
+  
     const pokemonData = {
       name: pokemon.name,
       image: pokemon.sprites.front_default,
       type: pokemon.types.map((type) => type.type.name).join(", "),
       height: pokemon.height,
       weight: pokemon.weight,
-      ability: pokemon.abilities[0]?.ability.name,
+      ability: pokemon.abilities.map(a => a.ability.name).join(', '),
       experience: pokemon.base_experience,
       hp: pokemon.stats.find((stat) => stat.stat.name === "hp")?.base_stat,
       attack: pokemon.stats.find((stat) => stat.stat.name === "attack")
@@ -103,7 +104,7 @@ const Home = () => {
       speed: pokemon.stats.find((stat) => stat.stat.name === "speed")
         ?.base_stat,
     };
-
+    
     const existingPokemon = rosterData.find((p) => p.name === pokemonData.name);
     if (existingPokemon) {
       alert("pokemon exitiert");
