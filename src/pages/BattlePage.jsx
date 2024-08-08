@@ -11,7 +11,7 @@ const BattlePage = () => {
   useEffect(() => {
     const fetchPokemons1 = async () => {
       try {
-        const response = await fetch("http://localhost:3000/roster");
+        const response = await fetch(`${import.meta.env.VITE_APP_TRAVEL_JOURNAL_API_URL}/roster`);
         if (!response.ok) {
           throw new Error("Failed to fetch Pokémon");
         }
@@ -198,7 +198,7 @@ const BattlePage = () => {
             </div>
           ))}
         </div>
-        <div className="flex items-center  justify-center mt-4 gap-6">
+        <div className="flex items-center justify-center gap-6 mt-4">
           <button
             onClick={startBattle}
             className="px-4 py-2 mt-4 text-white bg-blue-500 rounded"

@@ -5,7 +5,7 @@ const RosterPage = () => {
   
   const fetchPokemons = async () => {
     try {
-      const response = await fetch("http://localhost:3000/roster");
+      const response = await fetch(`${import.meta.env.VITE_APP_TRAVEL_JOURNAL_API_URL}/roster`);
       if (!response.ok) {
         throw new Error("Failed to fetch Pokémon");
       }
@@ -30,7 +30,7 @@ const RosterPage = () => {
 
   const deleteRoster = async (pokemon)=>{
     try {
-      const res = await fetch(`http://localhost:3000/roster/${pokemon.name}`, {
+      const res = await fetch(`${import.meta.env.VITE_APP_TRAVEL_JOURNAL_API_URL}/roster/${pokemon.name}`, {
         method: 'DELETE',
         headers: {
           "Content-Type": "application/json",

@@ -63,7 +63,7 @@ const Home = () => {
 
   const getAllRoster = async () => {
     try {
-      const response = await fetch("http://localhost:3000/roster");
+      const response = await fetch(`${import.meta.env.VITE_APP_TRAVEL_JOURNAL_API_URL}/roster`);
       if (response.status !== 200) throw Error("something went wrong");
       const data = await response.json();
       if (Array.isArray(data)) {
@@ -115,7 +115,7 @@ const Home = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3000/roster", {
+      const response = await fetch(`${import.meta.env.VITE_APP_TRAVEL_JOURNAL_API_URL}/roster`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
