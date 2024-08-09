@@ -96,15 +96,15 @@ const RosterPage = () => {
         })}
       </div>
       {selectedPokemon && (
-        <div className="pokemon-details fixed inset-0 bg-white p-8">
+        <div className="fixed inset-0 p-8 bg-white pokemon-details">
           <button 
             onClick={() => setSelectedPokemon(null)} 
-            className="absolute top-2 right-2 text-2xl"
+            className="absolute text-2xl top-2 right-2"
           >
             &times;
           </button>
           <div className="p-4 border rounded shadow pokemon-detail">
-            <h2 className="text-3xl font-bold mb-4">{capitalizeFirstLetter(selectedPokemon.name)}</h2>
+            <h2 className="mb-4 text-3xl font-bold">{capitalizeFirstLetter(selectedPokemon.name)}</h2>
             <img src={selectedPokemon.image} alt={selectedPokemon.name} className="mb-4" />
             <p><strong>Type:</strong> {selectedPokemon.type}</p>
             <p><strong>Height:</strong> {selectedPokemon.height}</p>
