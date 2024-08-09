@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const RosterPage = () => {
   const [pokemons, setPokemons] = useState([]);
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
   
   const fetchPokemons = async () => {
     try {
@@ -25,7 +26,11 @@ const RosterPage = () => {
   }, []);
 
   const handlePokemonClick = (pokemon) => {
-    console.log("Pokemon clicked:", pokemon);
+    setSelectedPokemon(pokemon);
+  };
+
+  const handleBackClick = () => {
+    setSelectedPokemon(null);
   };
 
   const deleteRoster = async (pokemon)=>{
@@ -77,7 +82,10 @@ const RosterPage = () => {
                 <h2 className="mb-2 text-xl font-bold">
                   {capitalizeFirstLetter(pokemon.name)}
                 </h2>
-                <button className="btn" onClick={() => deleteRoster(pokemon)}>X</button>
+                <button className="btn" onClick={(e) => {
+                  e.stopPropagation();
+                  deleteRoster(pokemon);
+                }}>X</button>
               </div>
               <img src={imageUrl} alt={pokemon.name} className="mb-2" />
               <p>HP: {hp}</p>
@@ -87,6 +95,37 @@ const RosterPage = () => {
           );
         })}
       </div>
+      {selectedPokemon && (
+        <div className="pokemon-details fixed inset-0 bg-white p-8">
+          <button 
+            onClick={() => setSelectedPokemon(null)} 
+            className="absolute top-2 right-2 text-2xl"
+          >
+            &times;
+          </button>
+          <div className="p-4 border rounded shadow pokemon-detail">
+            <h2 className="text-3xl font-bold mb-4">{capitalizeFirstLetter(selectedPokemon.name)}</h2>
+            <img src={selectedPokemon.image} alt={selectedPokemon.name} className="mb-4" />
+            <p><strong>Type:</strong> {selectedPokemon.type}</p>
+            <p><strong>Height:</strong> {selectedPokemon.height}</p>
+            <p><strong>Weight:</strong> {selectedPokemon.weight}</p>
+            <p><strong>Ability:</strong> {selectedPokemon.ability}</p>
+            <p><strong>Base Experience:</strong> {selectedPokemon.experience}</p>
+            <p><strong>HP:</strong> {selectedPokemon.hp}</p>
+            <p><strong>Attack:</strong> {selectedPokemon.attack}</p>
+            <p><strong>Defense:</strong> {selectedPokemon.defense}</p>
+            <p><strong>Special Attack:</strong> {selectedPokemon.specialAttack}</p>
+            <p><strong>Special Defense:</strong> {selectedPokemon.specialDefense}</p>
+            <p><strong>Speed:</strong> {selectedPokemon.speed}</p>
+          
+            <button onClick={handleBackClick} className="p-2 mb-4 text-white bg-red-500 rounded">
+              Back
+            </button>
+          </div>
+          
+
+        </div>
+      )}
     </div>
   );
 };
