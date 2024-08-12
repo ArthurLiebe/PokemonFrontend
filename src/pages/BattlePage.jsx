@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { setBattleResult } from "../components/BattleResults.js";
 import BattleDialog from "../components/BattleDialog.jsx";
 
@@ -7,6 +7,8 @@ const BattlePage = () => {
   const [pokemons2, setPokemons2] = useState([]);
   const [winner, setWinner] = useState(null);
   const [score, setScore] = useState({ player1: 0, player2: 0 });
+  const [logs, setLogs] = useState([]); // State to store logs
+  const logsEndRef = useRef(null); // Reference to the end of the logs container
 
   useEffect(() => {
     const fetchPokemons1 = async () => {
@@ -69,21 +71,50 @@ const BattlePage = () => {
     fetchPokemons2();
   }, []);
 
+  useEffect(() => {
+    if (logsEndRef.current) {
+      logsEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [logs]);
+
   const fight = (pokemon1, pokemon2) => {
     let p1 = { ...pokemon1 };
     let p2 = { ...pokemon2 };
+  
+    p1.hp = p1.stats.find(stat => stat.stat.name === "hp").base_stat;
+    p2.hp = p2.stats.find(stat => stat.stat.name === "hp").base_stat;
+  
+    p1.attack = p1.stats.find(stat => stat.stat.name === "attack").base_stat;
+    p2.attack = p2.stats.find(stat => stat.stat.name === "attack").base_stat;
+  
     let turn = Math.random() < 0.5 ? "p1" : "p2";
+  
+    const capitalizeFirstLetter = (string) => {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+  
+    const p1Name = capitalizeFirstLetter(p1.name);
+    const p2Name = capitalizeFirstLetter(p2.name);
 
+    const newLogs = [
+      `**Starting fight between ${p1Name} and ${p2Name}!**`,
+      `Initial HP: ${p1Name} (${p1.hp}), ${p2Name} (${p2.hp})`
+    ];
+  
     while (p1.hp > 0 && p2.hp > 0) {
       if (turn === "p1") {
         p2.hp -= p1.attack;
+        newLogs.push(`${p1Name} attacks ${p2Name}, ${p2Name} HP: ${p2.hp}`);
         if (p2.hp <= 0) {
+          setLogs(prevLogs => [...prevLogs, ...newLogs]);
           return "player1";
         }
         turn = "p2";
       } else {
         p1.hp -= p2.attack;
+        newLogs.push(`${p2Name} attacks ${p1Name}, ${p1Name} HP: ${p1.hp}`);
         if (p1.hp <= 0) {
+          setLogs(prevLogs => [...prevLogs, ...newLogs]);
           return "player2";
         }
         turn = "p1";
@@ -91,9 +122,10 @@ const BattlePage = () => {
     }
   };
 
-  const startBattle = () => {
+  const startBattle = async () => {
     let newScore = { player1: 0, player2: 0 };
-
+    setLogs([]); 
+  
     for (let i = 0; i < 5; i++) {
       const result = fight(pokemons1[i], pokemons2[i]);
       if (result === "player1") {
@@ -101,14 +133,16 @@ const BattlePage = () => {
       } else {
         newScore.player2 += 1;
       }
+      await new Promise(resolve => setTimeout(resolve, 3000)); 
     }
-
+  
     setScore(newScore);
     const winner =
       newScore.player1 > newScore.player2 ? "Player 1" : "Player 2";
     setWinner(winner);
     const resultString = `${winner} wins ${newScore.player1}:${newScore.player2}`;
     setBattleResult(resultString);
+    setLogs(prevLogs => [...prevLogs, `**${resultString}**`]);
     document.getElementById("my_modal_1").showModal();
   };
 
@@ -205,6 +239,15 @@ const BattlePage = () => {
           >
             Start Battle
           </button>
+        </div>
+        <div className="mt-4 p-4 border rounded shadow ">
+          <h2 className="text-xl font-bold text-center">Battle Logs</h2>
+          <div className="mt-2 font-bold text-center ">
+            {logs.map((log, index) => (
+              <p key={index}>{log}</p>
+            ))}
+            <div ref={logsEndRef} />
+          </div>
         </div>
         <BattleDialog score={score}/>
       </div>
