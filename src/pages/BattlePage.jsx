@@ -153,7 +153,7 @@ const BattlePage = () => {
   return (
     <>
       <div className="p-4">
-        <h1 className="mb-4 text-2xl font-bold text-center">Battle Page</h1>
+        <h1 className="mb-4 text-2xl font-bold text-center font-press-start">Battle Page</h1>
         <div className="flex flex-col items-center space-y-4">
           {pokemons1.map((pokemon1, index) => (
             <div key={index} className="flex items-center space-x-4">
@@ -235,13 +235,13 @@ const BattlePage = () => {
         <div className="flex items-center justify-center gap-6 mt-4">
           <button
             onClick={startBattle}
-            className="px-4 py-2 mt-4 text-white bg-blue-500 rounded"
+            className="px-4 py-2 mt-4 btn bg-transparent bg-yellow-300 hover:bg-yellow-600 font-press-start"
           >
             Start Battle
           </button>
         </div>
         <div className="mt-4 p-4 border rounded shadow ">
-          <h2 className="text-xl font-bold text-center">Battle Logs</h2>
+          <h2 className="text-xl font-bold text-center font-press-start">Battle Logs</h2>
           <div className="mt-2 font-bold text-center ">
             {logs.map((log, index) => (
               <p key={index}>{log}</p>

@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+
+      fontFamily: {
+        'press-start': ['"Press Start 2P"', 'cursive'],
+      },
       colors: {
         customRed: '#ff0000',
         customDarkRed: '#cc0000',
