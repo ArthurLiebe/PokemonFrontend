@@ -56,7 +56,7 @@ const RosterPage = () => {
 
   return (
     <div className="container relative p-4 mx-auto">
-      <div className="mb-4 text-3xl font-bold">
+      <div className="mb-4 text-2xl font-press-start">
         <h1>My Roster</h1>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

@@ -145,7 +145,7 @@ const Home = () => {
           </div>
         </div>
       )}
-      <h1 className="mb-4 text-3xl font-bold">Home Page</h1>
+      <h1 className="mb-4 text-2xl font-bold font-press-start">Home Page</h1>
       <form onSubmit={handleSearch} className="mb-4">
         <input
           type="text"
@@ -154,7 +154,7 @@ const Home = () => {
           placeholder="Search Pokémon"
           className="p-2 mr-2 border rounded"
         />
-        <button type="submit" className="p-2 text-white bg-blue-500 rounded">
+        <button type="submit" className="p-2 btn bg-transparent bg-yellow-300 hover:bg-yellow-600 font-press-start">
           Submit
         </button>
       </form>

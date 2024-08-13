@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 const Leaderboard = () => {
-  // const [scores, setScores] = useState([]);
-  // const [username, setUsername] = useState('');
-  // const [score, setScore] = useState(0);
   const [leaderboard, setLeaderboard] = useState([]);
 
-  // Fetch scores when the component mounts
+ 
   useEffect(() => {
     fetchScores();
   }, []);
 
-  // Function to fetch scores from the backend
+ 
   const fetchScores = async () => {
     try {
       const response = await fetch(
@@ -22,8 +19,10 @@ const Leaderboard = () => {
       }
       const data = await response.json();
       if (Array.isArray(data)) {
-        setLeaderboard(() => data);
-        console.log(leaderboard);
+        
+        const sortedData = data.sort((a, b) => b.score - a.score);
+        setLeaderboard(() => sortedData);
+        console.log(sortedData);
       } else {
         throw new Error("Failed to fetch Leaderboard");
       }
@@ -33,18 +32,20 @@ const Leaderboard = () => {
   };
 
   return (
-    <div className="m-auto mt-10 card bg-primary text-primary-content w-96">
-      <div className="card-body">
-        <h2 className="card-title">Leaderboard</h2>
-        <ul>
-          {leaderboard.map((entry) => (
-            <li key={entry.id}>
-              {entry.username}: {entry.score}
-            </li>
-          ))}
-        </ul>
+    
+      <div className="m-auto mt-10 card bg-primary text-primary-content w-96 text-center font-bold">
+        <div className="card-body">
+          <h2 className="card-title font-press-start text-center">Leaderboard:</h2>
+          <ul>
+            {leaderboard.map((entry, index) => (
+              <li key={entry.id}>
+                {index + 1}. {entry.username}: {entry.score}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+    
   );
 };
 
